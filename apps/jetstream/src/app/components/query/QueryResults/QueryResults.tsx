@@ -66,6 +66,7 @@ import QueryResultsGetRecAsApexModal from './QueryResultsGetRecAsApexModal';
 import QueryResultsSoqlPanel from './QueryResultsSoqlPanel';
 import QueryResultsViewRecordFields from './QueryResultsViewRecordFields';
 import { useQueryResultsFetchMetadata } from './useQueryResultsFetchMetadata';
+import copyToClipboard from 'copy-to-clipboard';
 
 type SourceAction = 'STANDARD' | 'ORG_CHANGE' | 'BULK_DELETE' | 'HISTORY' | 'RECORD_ACTION' | 'MANUAL' | 'RELOAD';
 
@@ -434,6 +435,10 @@ export const QueryResults: FunctionComponent<QueryResultsProps> = React.memo(() 
     setGetRecordAsApex(null);
   }
 
+  function handleGetAsJson(record: any) {
+    copyToClipboard(JSON.stringify(record, null, 2), { format: 'text/plain' });
+  }
+
   function handleRestoreFromHistory(soql: string, tooling) {
     navigate(`/query`, { state: { soql, isTooling: tooling, fromHistory: true } });
   }
@@ -661,6 +666,9 @@ export const QueryResults: FunctionComponent<QueryResultsProps> = React.memo(() 
               }}
               onGetAsApex={(record) => {
                 handleGetAsApex(record);
+              }}
+              onGetAsJson={(record) => {
+                handleGetAsJson(record);
               }}
             />
           )}
